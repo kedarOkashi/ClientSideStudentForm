@@ -1,6 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import { City } from "../../types/types";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 
 //States for fetch
@@ -40,10 +40,12 @@ export default function CityProvider({ children }: CityProviderProps) {
 
     try {
       const response = await axios.get<City[]>('https://localhost:7286/api/City/GetAllCitys')
+
+      console.log(response)
       setCitys(response.data)
-      console.log(citys)
     } catch (error: any) {
-      setError('Failed to fetch cities');
+      console.log(error.response.data)
+      setError(error.response.data);
     } finally {
       setLoading(false);
     }
